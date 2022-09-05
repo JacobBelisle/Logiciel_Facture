@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import org.controlsfx.control.SearchableComboBox?>
+<VBox alignment="TOP_CENTER" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.gui_java.HelloController">
+    <Button text="Search" onAction="#onButtonClick"/>
+    <Button text="Ajouter une facture" onAction="#addFacture"/>
+    <TextField fx:id="codeInput" maxWidth="250" onAction="#onButtonClick"/>
+    <SearchableComboBox fx:id="listClients" maxWidth="200"/>
+    <Text fx:id="error" visible="false" fill="red"/>
+    <ListView fx:id="listFacture" maxHeight="200" maxWidth="500"/>
+</VBox>
+
+
+

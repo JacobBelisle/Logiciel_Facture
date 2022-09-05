@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Text?>
+<?import org.controlsfx.control.SearchableComboBox?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.gui_java.InfoController"
+      prefHeight="100.0" prefWidth="200.0">
+    <GridPane alignment="TOP_LEFT" vgap="15">
+        <TextField fx:id="textNbFacture" maxWidth="75" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <CheckBox fx:id="checkboxisActif" text="Actif" GridPane.rowIndex="0" GridPane.columnIndex="1" selected="true"/>
+        <DatePicker fx:id="dateFacture" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <SearchableComboBox fx:id="listClients" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+    </GridPane>
+    <TextArea fx:id="note" maxHeight="10" maxWidth="250"/>
+
+    <GridPane>
+        <TableView fx:id="table" maxHeight="200" maxWidth="500" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <HBox GridPane.rowIndex="1" GridPane.columnIndex="0"
+              GridPane.halignment="RIGHT" alignment="CENTER_RIGHT">
+
+            <Text text="Grand Total: "/>
+            <TextField fx:id="grandTotal" maxWidth="75" editable="false"/>
+        </HBox>
+        <HBox GridPane.rowIndex="2" GridPane.columnIndex="0"
+              GridPane.halignment="RIGHT" alignment="CENTER_RIGHT">
+            <Text text="Solde: "/>
+            <TextField fx:id="solde" maxWidth="75" editable="false"/>
+        </HBox>
+
+        <Button fx:id="paiementDone" text="Paiement fait" GridPane.rowIndex="3" GridPane.columnIndex="0"
+                GridPane.halignment="RIGHT" onAction="#confirmPaiement"/>
+    </GridPane>
+    <GridPane>
+        <TextField fx:id="addDescription" promptText="Description" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <TextField fx:id="addQuantite" promptText="Quantité" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+        <CheckBox fx:id="addTaxes" text="Taxes?" selected="true" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+        <TextField fx:id="addPrice" promptText="Prix" GridPane.rowIndex="0" GridPane.columnIndex="3"/>
+        <Button text="Add" onAction="#addData" GridPane.rowIndex="0" GridPane.columnIndex="4"/>
+        <Button text="Delete" onAction="#deleteRow" GridPane.rowIndex="0" GridPane.columnIndex="5"/>
+    </GridPane>
+
+    <GridPane>
+        <Button fx:id="button1" text="Go back" onAction="#closeWindow" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <Button fx:id="buttonSave" text="Save" onAction="#SaveInfo" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+        <Button fx:id="printToPdf" text="Print to PDF" onAction="#generatePDF" GridPane.rowIndex="0"
+                GridPane.columnIndex="2"/>
+    </GridPane>
+    <Text fx:id="resultText" visible="false" fill="green"/>
+</VBox>
