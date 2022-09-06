@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.gui_java.ClientController"
+      prefHeight="100.0" prefWidth="200.0">
+    <HBox>
+        <TextField fx:id="textNbClient" maxWidth="75"/>
+    </HBox>
+
+    <GridPane hgap="25" vgap="15">
+        <Text text="Name:" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.Valignment="CENTER"/>
+        <TextField fx:id="textName" GridPane.rowIndex="0" GridPane.columnIndex="1" GridPane.Valignment="CENTER"/>
+
+        <Text text="Adresse:" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.Valignment="CENTER"/>
+        <TextField fx:id="textAdresse" GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.Valignment="CENTER"/>
+
+        <Text text="Téléphone:" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.Valignment="CENTER"/>
+        <TextField fx:id="textTelephone" GridPane.rowIndex="2" GridPane.columnIndex="1" GridPane.halignment="CENTER"/>
+
+        <Text text="Courriel:" GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.Valignment="CENTER"/>
+        <TextField fx:id="textCourriel" GridPane.rowIndex="3" GridPane.columnIndex="1" GridPane.halignment="CENTER"/>
+    </GridPane>
+
+    <GridPane hgap="25" vgap="25">
+        <Button fx:id="goback" text="Back" onAction="#closeWindow" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <Button fx:id="buttonSave" text="Save" onAction="#SaveInfo" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+    </GridPane>
+    <Text fx:id="resultText" visible="false" fill="green"/>
+</VBox>

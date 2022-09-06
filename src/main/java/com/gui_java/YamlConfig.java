@@ -19,7 +19,11 @@ public class YamlConfig implements YmlWritable {
     @Override
     public String toFile() {
         return "no_factures: " + noFactures + "\n" +
-                "no_clients: " + noClients + "\n";
+                "no_clients: " + noClients + "\n" +
+                "name: " + entreprise.getName() + "\n" +
+                "adresse: " + entreprise.getAdresse() + '\n' +
+                "telephone: " + entreprise.getTelephone() + '\n' +
+                "courriel: " + entreprise.getCourriel() + '\n';
     }
 
     public boolean readFile(String nameFile, String route) {

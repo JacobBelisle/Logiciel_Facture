@@ -3,6 +3,8 @@ package com.gui_java;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -18,7 +20,11 @@ import java.util.Vector;
 
 public class HelloController implements Initializable {
 
-    Facture _facture;
+    private Facture _facture;
+
+    private Client _client;
+
+    private Client[] ClientList;
 
     @FXML
     private TextField codeInput;
@@ -27,28 +33,82 @@ public class HelloController implements Initializable {
     private Text error;
 
     @FXML
-    private ListView listFacture;
+    private ListView listSearch;
 
     @FXML
     private SearchableComboBox listClients;
 
+    @FXML
+    private ComboBox whichSearch;
+
+    @FXML
+    private CheckBox btnNonActif;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //Log.print(String.format("%04d", 44));
-        Client[] list = Client.searchListClients();
+        getInfos();
+    }
 
-        String[] names = new String[list.length + 1];
+    private void getInfos() {
+        ClientList = Client.searchListClients();
 
-        for (int i = 0; i < list.length; i++) {
-            names[i + 1] = list[i].getName();
+        String[] names = new String[ClientList.length + 1];
+
+        for (int i = 0; i < ClientList.length; i++) {
+            names[i + 1] = ClientList[i].getName();
         }
         names[0] = "";
         listClients.setItems(FXCollections.observableArrayList(names));
+
+        String[] a = {"Facture", "Client"};
+        whichSearch.setItems(FXCollections.observableArrayList(a));
+        whichSearch.getSelectionModel().selectFirst();
     }
 
     @FXML
     protected void onButtonClick() {
-        SearchFacture();
+        switch (whichSearch.getValue().toString()) {
+            case "Facture":
+                SearchFacture();
+                break;
+
+            case "Client":
+                SearchClient();
+                break;
+
+            default:
+                break;
+        }
+
+        listSearch.setOnMouseClicked(mouseEvent -> {
+            if (mouseEvent.getClickCount() == 2) {
+                switch (whichSearch.getValue().toString()) {
+                    case "Facture":
+                        openFacture();
+                        break;
+
+                    case "Client":
+                        openClient();
+                        break;
+                }
+
+            }
+        });
+
+        listSearch.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER) {
+                switch (whichSearch.getValue().toString()) {
+                    case "Facture":
+                        openFacture();
+                        break;
+
+                    case "Client":
+                        openClient();
+                        break;
+                }
+            }
+        });
+
     }
 
     private void SearchFacture() {
@@ -63,14 +123,14 @@ public class HelloController implements Initializable {
                 Facture[] list = {_facture};
 
                 if (_facture.getClient().getName().equals(name) || name == "") {
-                    listFacture.setItems(FXCollections.observableArrayList(list));
-                    listFacture.requestFocus();
+                    listSearch.setItems(FXCollections.observableArrayList(list));
+                    listSearch.requestFocus();
                 } else {
-                    listFacture.getItems().clear();
+                    listSearch.getItems().clear();
                 }
                 error.setVisible(false);
             } else {
-                listFacture.getItems().clear();
+                listSearch.getItems().clear();
 
                 Log.print("Cette facture n'existe pas.");
                 error.setText("Cette facture n'existe pas");
@@ -87,7 +147,7 @@ public class HelloController implements Initializable {
 
             }
         } catch (NumberFormatException e) {
-            listFacture.getItems().clear();
+            listSearch.getItems().clear();
 
             if (codeInput.getText().isEmpty()) {
                 if (name != "") {
@@ -96,15 +156,15 @@ public class HelloController implements Initializable {
                     Vector<Facture> fine = new Vector<>();
 
                     for (int i = 0; i < allFacture.length; i++) {
-                        if (allFacture[i].getClient().getName().equals(name) && allFacture[i].getActif())
+                        if (allFacture[i].getClient().getName().equals(name))
                             fine.add(allFacture[i]);
                     }
 
-                    listFacture.setItems(FXCollections.observableArrayList(fine.toArray()));
-                    listFacture.requestFocus();
+                    listSearch.setItems(FXCollections.observableArrayList(fine.toArray()));
+                    listSearch.requestFocus();
                 } else {
-                    listFacture.setItems(FXCollections.observableArrayList(listAllFacture()));
-                    listFacture.requestFocus();
+                    listSearch.setItems(FXCollections.observableArrayList(listAllFacture()));
+                    listSearch.requestFocus();
                 }
             } else {
                 error.setText("Le texte doit être un chiffre");
@@ -119,18 +179,29 @@ public class HelloController implements Initializable {
                 }, 2000);
             }
         }
+    }
 
-        listFacture.setOnMouseClicked(mouseEvent -> {
-            if (mouseEvent.getClickCount() == 2) {
-                openFacture();
-            }
-        });
+    private void SearchClient() {
+        _client = new Client();
 
-        listFacture.setOnKeyPressed(keyEvent -> {
-            if (keyEvent.getCode() == KeyCode.ENTER) {
-                openFacture();
+        String name = "";
+        name = listClients.getValue() != null ? listClients.getValue().toString() : "";
+
+        Client c = new Client();
+
+        if (!name.equals("")) {
+            for (Client i : ClientList) {
+                if (i.getName().equals(listClients.getValue().toString()))
+                    c = i;
             }
-        });
+            _client.readFile("C" + c.getNumberClient(), RouteCode.Clients);
+
+            listSearch.setItems(FXCollections.observableArrayList(c));
+        } else {
+            listSearch.getItems().clear();
+            listSearch.setItems(FXCollections.observableArrayList(ClientList));
+        }
+        listSearch.requestFocus();
     }
 
     @FXML
@@ -141,10 +212,29 @@ public class HelloController implements Initializable {
         w.showWindow();
     }
 
+    @FXML
+    private void addClient() {
+        Window w = new Window("Nouveau client", ClientController.class.getResource("client-view.fxml"),
+                960, 540, Modality.APPLICATION_MODAL);
+
+        w.showWindow();
+    }
+
     private void openFacture() {
-        Facture currentItem = (Facture) listFacture.getSelectionModel().getSelectedItem();
+        Facture currentItem = (Facture) listSearch.getSelectionModel().getSelectedItem();
 
         Window w = new Window("Facture # " + currentItem.getNumberFacture(), HelloApplication.class.getResource("info-view.fxml"),
+                960, 540, Modality.APPLICATION_MODAL);
+
+        w.sendData(currentItem);
+
+        w.showWindow();
+    }
+
+    private void openClient() {
+        Client currentItem = (Client) listSearch.getSelectionModel().getSelectedItem();
+
+        Window w = new Window("Client # " + currentItem.getNumberClient(), ClientController.class.getResource("client-view.fxml"),
                 960, 540, Modality.APPLICATION_MODAL);
 
         w.sendData(currentItem);
@@ -170,10 +260,14 @@ public class HelloController implements Initializable {
 
         Vector<Facture> list = new Vector<>();
         for (int i = 0; i < listofFacture.length; i++) {
-            if (listofFacture[i].getActif())
+            if (listofFacture[i].getActif() || (listofFacture[i].getActif() == !btnNonActif.isSelected()))
                 list.add(listofFacture[i]);
         }
 
         return list.toArray(new Facture[list.size()]);
+    }
+
+    public void refresh() {
+        getInfos();
     }
 }

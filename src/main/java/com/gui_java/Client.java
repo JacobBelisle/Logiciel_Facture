@@ -61,6 +61,15 @@ public class Client implements YmlWritable {
         }
     }
 
+    @Override
+    public String toFile() {
+        return "number_client: " + numberClient + "\n" +
+                "name: " + name + "\n" +
+                "adresse: " + adresse + '\n' +
+                "telephone: " + telephone + '\n' +
+                "courriel: " + courriel + '\n';
+    }
+
     public String getNumberClient() {
         return numberClient;
     }
@@ -79,15 +88,7 @@ public class Client implements YmlWritable {
 
     @Override
     public String toString() {
-        return "Client{" +
-                "numberClient='" + numberClient + '\'' +
-                ", name='" + name + '\'' +
-                '}';
-    }
-
-    @Override
-    public String toFile() {
-        return "";
+        return name;
     }
 
     public static Client[] searchListClients() {

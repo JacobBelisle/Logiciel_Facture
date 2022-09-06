@@ -6,14 +6,20 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.SearchableComboBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.CheckBox?>
 <VBox alignment="TOP_CENTER" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.gui_java.HelloController">
     <Button text="Search" onAction="#onButtonClick"/>
+    <CheckBox fx:id="btnNonActif" text="Non Actif"/>
+    <ComboBox fx:id="whichSearch" maxWidth="100"/>
     <Button text="Ajouter une facture" onAction="#addFacture"/>
+    <Button text="Ajouter un client" onAction="#addClient"/>
     <TextField fx:id="codeInput" maxWidth="250" onAction="#onButtonClick"/>
     <SearchableComboBox fx:id="listClients" maxWidth="200"/>
     <Text fx:id="error" visible="false" fill="red"/>
-    <ListView fx:id="listFacture" maxHeight="200" maxWidth="500"/>
+    <ListView fx:id="listSearch" maxHeight="200" maxWidth="500"/>
+    <Button onAction="#refresh" text="Refresh Clients"/>
 </VBox>
 
 
